@@ -11,6 +11,7 @@ import "sebuf/http/annotations.proto";
 // ExampleID represents a unique identifier for an example entity.
 // Replace with your actual domain identifiers (e.g., UserID, OrderID).
 message ExampleID {
+  // The UUID string value of the identifier.
   string value = 1 [
     (buf.validate.field).string.uuid = true,
     (buf.validate.field).required = true,

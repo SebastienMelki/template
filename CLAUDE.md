@@ -40,8 +40,8 @@ Ask:
 1. Replace all `{{ORG}}`, `{{PROJECT}}`, `{{PROJECT_DESCRIPTION}}` placeholders
 2. Create proto files for each domain (service + messages)
 3. Create backend module skeleton for each domain (copy the `example` module pattern)
-4. Run `go mod tidy` in `backend/`
-5. Run `make generate` (buf generate + sqlc generate)
+4. Run `make generate` (sqlc generate + buf generate)
+5. Run `go mod tidy` in `backend/` (after generation so sqlc imports resolve)
 6. Verify: `buf lint`, `go build ./...`, `go test ./...`
 7. Commit
 

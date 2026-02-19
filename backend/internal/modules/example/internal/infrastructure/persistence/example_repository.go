@@ -6,6 +6,7 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgtype"
 
 	"github.com/{{ORG}}/{{PROJECT}}/backend/internal/database"
 	"github.com/{{ORG}}/{{PROJECT}}/backend/internal/modules/example/internal/domain/entity"
@@ -27,13 +28,13 @@ func NewExampleRepository(db database.DBTX) *ExampleRepository {
 
 // Create persists a new example entity.
 func (r *ExampleRepository) Create(ctx context.Context, e *entity.Example) error {
-	desc := &e.Description
-	if e.Description == "" {
-		desc = nil
+	var desc pgtype.Text
+	if e.Description != "" {
+		desc = pgtype.Text{String: e.Description, Valid: true}
 	}
 
 	result, err := r.queries.CreateExample(ctx, sqlc.CreateExampleParams{
-		ID:          e.ID,
+		ID:          uuidToPgtype(e.ID),
 		Name:        e.Name,
 		Description: desc,
 	})
@@ -41,14 +42,14 @@ func (r *ExampleRepository) Create(ctx context.Context, e *entity.Example) error
 		return fmt.Errorf("failed to insert example: %w", err)
 	}
 
-	e.CreatedAt = result.CreatedAt
-	e.UpdatedAt = result.UpdatedAt
+	e.CreatedAt = result.CreatedAt.Time
+	e.UpdatedAt = result.UpdatedAt.Time
 	return nil
 }
 
 // GetByID retrieves an example by its ID.
 func (r *ExampleRepository) GetByID(ctx context.Context, id uuid.UUID) (*entity.Example, error) {
-	row, err := r.queries.GetExampleByID(ctx, id)
+	row, err := r.queries.GetExampleByID(ctx, uuidToPgtype(id))
 	if err != nil {
 		if err == pgx.ErrNoRows {
 			return nil, nil
@@ -86,22 +87,26 @@ func (r *ExampleRepository) Count(ctx context.Context) (int64, error) {
 
 // Delete removes an example by its ID.
 func (r *ExampleRepository) Delete(ctx context.Context, id uuid.UUID) error {
-	if err := r.queries.DeleteExample(ctx, id); err != nil {
+	if err := r.queries.DeleteExample(ctx, uuidToPgtype(id)); err != nil {
 		return fmt.Errorf("failed to delete example: %w", err)
 	}
 	return nil
 }
 
+func uuidToPgtype(id uuid.UUID) pgtype.UUID {
+	return pgtype.UUID{Bytes: id, Valid: true}
+}
+
 func sqlcToEntity(row sqlc.Example) *entity.Example {
 	desc := ""
-	if row.Description != nil {
-		desc = *row.Description
+	if row.Description.Valid {
+		desc = row.Description.String
 	}
 	return &entity.Example{
-		ID:          row.ID,
+		ID:          uuid.UUID(row.ID.Bytes),
 		Name:        row.Name,
 		Description: desc,
-		CreatedAt:   row.CreatedAt,
-		UpdatedAt:   row.UpdatedAt,
+		CreatedAt:   row.CreatedAt.Time,
+		UpdatedAt:   row.UpdatedAt.Time,
 	}
 }

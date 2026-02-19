@@ -3,6 +3,7 @@ managed:
   enabled: true
   override:
     - file_option: go_package_prefix
+      module: buf.build/{{ORG}}/{{PROJECT}}
       value: github.com/{{ORG}}/{{PROJECT}}/backend/api
 plugins:
   # Go protobuf types
@@ -15,13 +16,7 @@ plugins:
     out: backend/api
     opt: paths=source_relative
 
-  # OpenAPI v3 specs (YAML)
-  - local: protoc-gen-openapiv3
-    out: api-docs
-    opt:
-      - yaml=true
-
-  # OpenAPI v3 specs (JSON)
+  # OpenAPI v3 specs
   - local: protoc-gen-openapiv3
     out: api-docs
 
