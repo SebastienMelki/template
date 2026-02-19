@@ -1,6 +1,0 @@
-config:
-  {{PROJECT}}-infrastructure:project: {{PROJECT}}-dev
-  {{PROJECT}}-infrastructure:environment: dev
-  {{PROJECT}}-infrastructure:domain: {{DOMAIN}}
-  digitalocean:token:
-    secure: REPLACE_WITH_ENCRYPTED_TOKEN
