@@ -1,6 +1,8 @@
 module github.com/{{ORG}}/{{PROJECT}}/backend
 
-go 1.24
+go 1.24.7
+
+toolchain go1.24.7
 
 require (
 	buf.build/go/protovalidate v0.14.0

@@ -3,6 +3,7 @@ package persistence_test
 import (
 	"context"
 	"fmt"
+	"os/exec"
 	"testing"
 	"time"
 
@@ -23,10 +24,20 @@ const (
 	testDBPass = "testpass"
 )
 
+func dockerAvailable() bool {
+	cmd := exec.Command("docker", "info")
+	return cmd.Run() == nil
+}
+
 // setupTestDB spins up a PostgreSQL container via testcontainers and returns
 // a database.DB wrapper plus a cleanup function.
 func setupTestDB(t *testing.T) (*database.DB, func()) {
 	t.Helper()
+
+	if !dockerAvailable() {
+		t.Skip("Docker not available, skipping integration test")
+	}
+
 	ctx := context.Background()
 
 	pgContainer, err := postgres.Run(ctx,

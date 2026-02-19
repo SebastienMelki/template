@@ -37,12 +37,14 @@ Ask:
 
 ### Step 3: Scaffold
 
-1. Replace all `{{ORG}}`, `{{PROJECT}}`, `{{PROJECT_DESCRIPTION}}` placeholders
+**IMPORTANT:** The placeholders below use double-brace syntax in the actual template files. When replacing, search for the literal strings including the braces.
+
+1. Replace all placeholders: `ORG` (GitHub owner), `PROJECT` (project name), `PROJECT_DESCRIPTION` (one-liner)
 2. Create proto files for each domain (service + messages)
 3. Create backend module skeleton for each domain (copy the `example` module pattern)
-4. Run `make generate` (sqlc generate + buf generate)
-5. Run `go mod tidy` in `backend/` (after generation so sqlc imports resolve)
-6. Verify: `buf lint`, `go build ./...`, `go test ./...`
+4. Run `make generate` (sqlc generate, then buf dep update + buf generate)
+5. Run `cd backend && go mod tidy` (after generation so all imports resolve)
+6. Verify: `buf lint`, `cd backend && go build ./...`, `cd backend && go test ./...`
 7. Commit
 
 ---
@@ -106,7 +108,7 @@ Empty Pulumi scaffold in Go. Add components as needed for your cloud provider.
 ## Development Commands
 
 ```bash
-make generate       # Run all code generation (proto + sqlc)
+make generate       # Run all code generation (sqlc + buf)
 make build          # Build everything
 make test           # Run all tests
 make lint           # Lint everything
@@ -118,7 +120,7 @@ make clean          # Clean build artifacts
 cd backend
 make build          # Build server binary
 make run            # Run server
-make test           # Run tests (uses testcontainers)
+make test           # Run tests (uses testcontainers, requires Docker)
 make lint           # Run golangci-lint
 make generate-sqlc  # Regenerate sqlc code
 ```

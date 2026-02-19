@@ -1,8 +1,9 @@
 .PHONY: generate build test lint clean
 
 generate:
-	buf generate
 	$(MAKE) -C backend generate-sqlc
+	buf dep update
+	buf generate
 
 build:
 	$(MAKE) -C backend build
