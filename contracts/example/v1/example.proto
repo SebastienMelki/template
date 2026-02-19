@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package example.v1;
+
+import "core/v1/identifiers.proto";
+import "google/protobuf/timestamp.proto";
+
+// Example represents the example domain entity.
+message Example {
+  // Unique identifier.
+  core.v1.ExampleID id = 1;
+  // Display name.
+  string name = 2;
+  // Optional description.
+  string description = 3;
+  // When the entity was created.
+  google.protobuf.Timestamp created_at = 4;
+  // When the entity was last updated.
+  google.protobuf.Timestamp updated_at = 5;
+}

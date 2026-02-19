@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package example.v1;
+
+import "core/v1/identifiers.proto";
+import "example/v1/example.proto";
+import "buf/validate/validate.proto";
+
+// GetExampleRequest is the input for retrieving a single example.
+message GetExampleRequest {
+  // The ID of the example to retrieve (required).
+  core.v1.ExampleID example_id = 1 [(buf.validate.field).required = true];
+}
+
+// GetExampleResponse is returned when retrieving an example.
+message GetExampleResponse {
+  // The requested example entity.
+  example.v1.Example example = 1;
+}

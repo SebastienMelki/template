@@ -1,0 +1,13 @@
+name: {{PROJECT}}-infrastructure
+runtime: go
+description: Infrastructure for {{PROJECT}}
+config:
+  project:
+    type: string
+    description: Project name
+  environment:
+    type: string
+    description: Environment (dev or prod)
+  domain:
+    type: string
+    description: Domain name

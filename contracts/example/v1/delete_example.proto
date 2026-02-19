@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package example.v1;
+
+import "core/v1/identifiers.proto";
+import "buf/validate/validate.proto";
+
+// DeleteExampleRequest is the input for deleting an example.
+message DeleteExampleRequest {
+  // The ID of the example to delete (required).
+  core.v1.ExampleID example_id = 1 [(buf.validate.field).required = true];
+}
+
+// DeleteExampleResponse is returned after deleting an example.
+message DeleteExampleResponse {
+  // Empty response — successful deletion returns no content.
+}

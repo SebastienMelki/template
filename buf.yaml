@@ -1,0 +1,19 @@
+version: v2
+modules:
+  - path: contracts
+    name: buf.build/{{ORG}}/{{PROJECT}}
+deps:
+  - buf.build/bufbuild/protovalidate
+  - buf.build/sebmelki/sebuf
+lint:
+  use:
+    - STANDARD
+    - COMMENTS
+  except:
+    - FIELD_NOT_REQUIRED
+    - PACKAGE_NO_IMPORT_CYCLE
+breaking:
+  use:
+    - FILE
+    - PACKAGE
+    - WIRE_JSON

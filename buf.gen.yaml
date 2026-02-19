@@ -1,0 +1,30 @@
+version: v2
+managed:
+  enabled: true
+  override:
+    - file_option: go_package_prefix
+      value: github.com/{{ORG}}/{{PROJECT}}/backend/api
+plugins:
+  # Go protobuf types
+  - remote: buf.build/protocolbuffers/go
+    out: backend/api
+    opt: paths=source_relative
+
+  # Go HTTP handlers (sebuf)
+  - local: protoc-gen-go-http
+    out: backend/api
+    opt: paths=source_relative
+
+  # OpenAPI v3 specs (YAML)
+  - local: protoc-gen-openapiv3
+    out: api-docs
+    opt:
+      - yaml=true
+
+  # OpenAPI v3 specs (JSON)
+  - local: protoc-gen-openapiv3
+    out: api-docs
+
+  # TypeScript clients
+  - local: protoc-gen-ts-client
+    out: frontend/src/api/generated

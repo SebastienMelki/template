@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package example.v1;
+
+import "core/v1/identifiers.proto";
+import "buf/validate/validate.proto";
+
+// CreateExampleRequest is the input for creating a new example.
+message CreateExampleRequest {
+  // Display name (required).
+  string name = 1 [(buf.validate.field).string.min_len = 1];
+  // Optional description.
+  string description = 2;
+}
+
+// CreateExampleResponse is returned after creating an example.
+message CreateExampleResponse {
+  // The ID of the newly created example.
+  core.v1.ExampleID example_id = 1;
+}

@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+package example.v1;
+
+import "sebuf/http/annotations.proto";
+import "example/v1/create_example.proto";
+import "example/v1/get_example.proto";
+import "example/v1/list_examples.proto";
+import "example/v1/delete_example.proto";
+
+// ExampleService provides CRUD operations for the example domain.
+service ExampleService {
+  option (sebuf.http.service_config) = {
+    base_path: "/api/example/v1"
+  };
+
+  // CreateExample creates a new example entity.
+  rpc CreateExample(CreateExampleRequest) returns (CreateExampleResponse) {
+    option (sebuf.http.config) = {
+      path: "/create-example"
+    };
+  }
+
+  // GetExample retrieves an example entity by ID.
+  rpc GetExample(GetExampleRequest) returns (GetExampleResponse) {
+    option (sebuf.http.config) = {
+      path: "/get-example"
+    };
+  }
+
+  // ListExamples retrieves a list of example entities.
+  rpc ListExamples(ListExamplesRequest) returns (ListExamplesResponse) {
+    option (sebuf.http.config) = {
+      path: "/list-examples"
+    };
+  }
+
+  // DeleteExample removes an example entity by ID.
+  rpc DeleteExample(DeleteExampleRequest) returns (DeleteExampleResponse) {
+    option (sebuf.http.config) = {
+      path: "/delete-example"
+    };
+  }
+}
